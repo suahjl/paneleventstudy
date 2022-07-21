@@ -1,7 +1,7 @@
 # paneleventstudy
-This module implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021) (derived from https://github.com/lsun20/EventStudyInteract).
+This Python package implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021) (derived from https://github.com/lsun20/EventStudyInteract).
 
-This module includes threesets of functions:
+The package includes threesets of functions:
 1. ```Data cleaning```: Functions to prepare data frames for the analytical set of functions, e.g., ensuring that they are in the right format, and have the right columns (with the right content)
 2. ```Analytical```: Direct implementation of the event study models
 3. ```Utilities```: Tools to assist the user in setting up input-output flows
