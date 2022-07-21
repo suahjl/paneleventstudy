@@ -1,0 +1,38 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paneleventstudy"
+version = "0.0.0"
+description = "This module implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021)."
+readme = "README.md"
+authors = [{ name = "Jing Lian Suah", email = "suahjinglian@bnm.gov.my" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["Econometrics", "Event Study", "Panel Data", "Time Series"]
+dependencies = [
+    "pandas >= 1.4.3",
+	"numpy >= 1.23.0",
+	"linearmodels >= 4.27",
+	"plotly >= 5.9.0",
+	"statsmodels >= 0.13.2",
+	"sympy >= 1.10.1",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = []
+
+[project.urls]
+PyPI = "https://pypi.org/project/paneleventstudy/"
+GitHub = "https://github.com/suahjl/paneleventstudy/"
+
+[project.scripts]
+paneleventstudy = "paneleventstudy.__main__:main"
