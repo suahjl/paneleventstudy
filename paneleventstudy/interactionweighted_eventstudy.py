@@ -46,7 +46,6 @@ def interactionweighted_eventstudy(
         dnc = d[~(d[cohort] == -1)]  # exclude never-treated cohort
     if not has_nevertreated:
         dnc = d[~(d[cohort] == d[cohort].max())]  # exclude last-treated cohort
-
     # cohort shares (regression version)
     list_cohort = list(dnc[cohort].unique())
     cshares = pd.DataFrame(columns=[reltime, cohort, 'shares'])

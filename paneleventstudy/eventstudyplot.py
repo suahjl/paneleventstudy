@@ -19,25 +19,27 @@ def eventstudyplot(input, big_title='Event Study Plot (With 95% CIs)', path_outp
         )
     )
     # Lower bound
-    fig.add_trace(
-        go.Scatter(
-            x=d.index,
-            y=d['lower'],
-            name='Lower Confidence Bound',
-            mode='lines',
-            line=dict(color='black', width=1, dash='dash')
+    if len(d[~d['lower'].isna()]) > 0:
+        fig.add_trace(
+            go.Scatter(
+                x=d.index,
+                y=d['lower'],
+                name='Lower Confidence Bound',
+                mode='lines',
+                line=dict(color='black', width=1, dash='dash')
+            )
         )
-    )
     # Upper bound
-    fig.add_trace(
-        go.Scatter(
-            x=d.index,
-            y=d['upper'],
-            name='Upper Confidence Bound',
-            mode='lines',
-            line=dict(color='black', width=1, dash='dash')
+    if len(d[~d['upper'].isna()]) > 0:
+        fig.add_trace(
+            go.Scatter(
+                x=d.index,
+                y=d['upper'],
+                name='Upper Confidence Bound',
+                mode='lines',
+                line=dict(color='black', width=1, dash='dash')
+            )
         )
-    )
     # Overall layout
     fig.update_layout(
         title=big_title,

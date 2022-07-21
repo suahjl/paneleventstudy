@@ -10,7 +10,7 @@ __version__ = "0.0.0"
 
 # Load scripts / classes / functions so that they can be called directly
 
-from dataprep import (
+from .dataprep import (
 dropmissing,
 balancepanel,
 identifycontrols,
@@ -21,14 +21,18 @@ checkcollinear,
 checkfullrank,
 )
 
-from naivetwfe_eventstudy import (
+from .timeseries_eventstudy import (
+timeseries_eventstudy,
+)
+
+from .naivetwfe_eventstudy import (
 naivetwfe_eventstudy,
 )
 
-from interactionweighted_eventstudy import (
+from .interactionweighted_eventstudy import (
 interactionweighted_eventstudy,
 )
 
-from eventstudyplot import (
+from .eventstudyplot import (
 eventstudyplot,
 )

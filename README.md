@@ -107,6 +107,7 @@ paneleventstudy.interactionweighted_eventstudy()
 ## Single Entity Event Study 
 ### Documentation
 ```python
+paneleventstudy.timeseries_eventstudy()
 ```
 #### Parameters
 #### Output
