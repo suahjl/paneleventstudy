@@ -45,7 +45,7 @@ def naivetwfe_eventstudy(
     elif len(covariates) > 0:
         eqn = outcome + " ~ 1 + " + "C(" + reltime + ")" + " +" + "+".join(covariates) + " + EntityEffects + TimeEffects" # R-style equations
     print('Estimating equation: ' + eqn)
-    mod = PanelOLS.from_formula(eqn, data=d)
+    mod = PanelOLS.from_formula(eqn, data=d, drop_absorbed=True)
     res = mod.fit(cov_type=vcov_type)
     beta = pd.DataFrame(res.params)  # all estimated coefficients
     ci = pd.DataFrame(res.conf_int())  # CIs of all estimated coefficients

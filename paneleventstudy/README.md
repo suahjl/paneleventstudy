@@ -9,8 +9,11 @@ The package includes three sets of functions:
 # Installation
 1. ```pip install paneleventstudy```
 
+# Examples
 
-# Implementation (Data Cleaning)
+Refer to the JuPyTeR notebook ```example_paneleventstudy.ipynb```
+
+# Implementation Notes (Data Cleaning)
 ## Counting and dropping missing observations
 ### Documentation
 ```python
@@ -27,7 +30,6 @@ paneleventstudy.dropmissing(data, event)
 1. A copy of ```data``` with rows corresponding to missing ```event``` dropped
 2. Display on the interface the number of rows in ```data```, and the number of rows in the output data frame
 
-### Example
 
 ## Checking if input dataframe is a balanced panel
 Most panel event study methods in the literature, and is the case at present for all methods covered in this package, only work with balanced panel data. 
@@ -63,7 +65,6 @@ paneleventstudy.balancepanel(data, group, event, calendartime, check_minmax=True
 
 #### Output
 A Boolean indicating if ```data``` is balanced.
-### Example
 
 
 ## Generate column indicating control groups (never-treated / last-treated)
@@ -92,7 +93,7 @@ paneleventstudy.identifycontrols(data, group, event)
 #### Output
 A copy of ```data``` with a new column labelled ```control_group``` indicating if the entity in ```group``` is a control group (never-treated or last-treated).
 
-### Example
+
 
 ## Generate relative time column (treatment onset = 0)
 Event studies methodologies essentially estimate the dynamic treatment effect relative to the onset of treatment (i.e., before and after treatment). 
@@ -128,10 +129,11 @@ paneleventstudy.genreltime(data, group, event, calendartime, reltime='reltime', 
 #### Output
 A copy of ```data``` with a new column labelled ```reltime``` containing the relative times for all calendar times in ```calendar``` by entities in ```group```.
 
-### Example
+
 
 ## Generate column indicating treatment cohorts
-[Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006)'s 
+[Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006)'s interaction-weighted event study methodology requires (1) the estimation of cohort-specific treatment effects, and (2) cohort shares by relative times.
+To do this, the methodology requires an identifier for groups that were treated in the same calendar time. 
 
 ### Documentation
 ```python
@@ -159,9 +161,12 @@ paneleventstudy.gencohort(data, group, event, calendartime, cohort='cohort', che
 #### Output
 A copy of ```data``` with a new column labelled ```cohort``` indicating the treatment cohort that the entities ```group``` belong to.
 
-### Example
+
 
 ## Generate calendar time with integers
+For generalise across the infinitely many possible formats that calendar times can be presented in (e.g., miliseconds, seconds, days, months, quarters, years, or even custom ones), calendar times can be converted into numerics.
+This eases computation in the rest of the package, by converting the calendar time column into integers starting from 0 (earliest) to T (latest).
+
 ### Documentation
 ```python
 paneleventstudy.gencalendartime_numerics(data, group, event, calendartime, calendartime_numerics='ct')
@@ -185,9 +190,12 @@ paneleventstudy.gencalendartime_numerics(data, group, event, calendartime, calen
 #### Output
 A copy of ```data``` with a new column labelled ```calendartime_numerics``` with numeric version of ```calendartime```, which can then be passed to the analytical functions.
 
-### Example
+
 
 ## Identify collinear or invariant columns
+The basic functional form of estimating equations in the DiD and event study methodology is a linear regression, which requires variables in the RHS of the equation to not be multicollinear, or invariant.
+This function checks if this is indeed the case.
+
 ### Documentation
 ```python
 paneleventstudy.checkcollinear(data, rhs)
@@ -197,12 +205,17 @@ paneleventstudy.checkcollinear(data, rhs)
 	[pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
 
 ```rhs```:
-	A list containing strings matching the labels of the columns in ```data``` to be checked for collinearity and invariance
+	A list containing strings matching the labels of the columns in ```data``` to be checked for collinearity and invariance; precedence goes to columns in the rightmost of ```rhs``` (if two columns are collinear, the one appearing later in ```rhs``` is not included in the output)
 
 #### Output
-### Example
+A list of labels in ```rhs``` which should be dropped to avoid multicollinearity or invariance in ```rhs``` columns in ```data```.
+
+
 
 ## Identify linearly dependent columns
+The basic functional form of estimating equations in the DiD and event study methodology is a linear regression, which requires the matrix containing the variables in the RHS of the equation to satisfy full column rank.
+This function checks if this is indeed the case.
+
 ### Documentation
 ```python
 paneleventstudy.checkfullrank(data, rhs, intercept='Intercept')
@@ -212,15 +225,17 @@ paneleventstudy.checkfullrank(data, rhs, intercept='Intercept')
 	[pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
 
 ```rhs```:
-	A list containing strings matching the labels of the columns in ```data``` to be checked for full rank
+	A list containing strings matching the labels of the columns in ```data``` to be checked for full rank; precedence goes to columns in the rightmost of ```rhs```
 
 ```intercept```:
 	String containing the label of the intercept column (column of numerics 1), which will be given precedence in the procedure; set as ```None``` if no intercepts are contained in ```data```, and the default is ```'Intercept'```, which is the default when using [patsy.dmatrices()](https://patsy.readthedocs.io/en/latest/API-reference.html)
 
 #### Output
-### Example
+A list of labels in ```rhs``` which should be dropped to for the matrix containing ```rhs``` columns in ```data``` to satisfy full rank.
 
-# Implementation (Analytical)
+
+
+# Implementation Notes (Analytical)
 ## Naive Two-Way Fixed Effects (TWFE) Panel Event Study
 Estimates dynamic treatment effects using a standard TWFE model. 
 Specifically, we are interested in estimating $\beta_{l}$, the coefficients on leads and lags of treatment dummies, where $l$ is relative time as in [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006), i.e., the time period relative to treatment onset. 
@@ -269,7 +284,7 @@ Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas
 1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
 2. ```lower```: The lower confidence bound of ```parameter```
 3. ```upper```:  The upper confidence bound of ```parameter```
-### Example
+
 
 
 ## Interaction-Weighted Panel Event Study 
@@ -335,7 +350,7 @@ Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas
 1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
 2. ```lower```: The lower confidence bound of ```parameter```
 3. ```upper```:  The upper confidence bound of ```parameter```
-### Example
+
 
 
 ## Single Entity Event Study 
@@ -373,9 +388,9 @@ Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas
 1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
 2. ```lower```: The lower confidence bound of ```parameter```
 3. ```upper```:  The upper confidence bound of ```parameter```
-### Example
 
-# Implementation (Utilities)
+
+# Implementation Notes (Utilities)
 ## Plotting Event Study Lead and Lag Coefficients
 This function calls plotly's [graph_objects](https://plotly.com/python/graph-objects/) module to show the event study estimates (dynamic treatment effects) to be shown as a line chart, together with their confidence bands (can be manually excluded).
 Moreover, it exports an interactive graph as a html file via plotly's [plotly.io.write_html()](), and a static graph as a png file via plotly's [plotly.io.write_image()].
@@ -399,7 +414,6 @@ paneleventstudy.eventstudyplot(input, big_title='Event Study Plot (With 95% CIs)
 	String containing the file name of the image and html file to be generated; default is ```'eventstudyplot'```
 
 #### Output
-### Examples
 
 
 # Requirements

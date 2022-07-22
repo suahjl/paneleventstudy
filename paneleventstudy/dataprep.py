@@ -210,6 +210,7 @@ def checkfullrank(data, rhs, intercept='Intercept'):
         rhs_reverse = [intercept] + rhs_reverse  # move intercept back to the very front of the reversed list (prioritised)
     d = data[rhs_reverse].copy()  # deep copy (reversed columns to be checked for full rank)
     # Identify linearly dependent columns
+    print('Transforming input matrix into reduced row echelon form')
     rf, ind = sympy.Matrix(d.values).rref()  # reduced row echelon form, locations of linearly independent columns
     ind = list(ind)  # convert tuple into list
     d = d.iloc[:, ind]  # keep only linearly independent columns
