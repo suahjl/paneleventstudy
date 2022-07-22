@@ -14,7 +14,7 @@ The package includes threesets of functions:
 ## Counting and dropping missing observations
 ### Documentation
 ```python
-paneleventstudy.dropmissing()
+paneleventstudy.dropmissing(data, event)
 ```
 #### Parameters
 #### Output
@@ -23,7 +23,7 @@ paneleventstudy.dropmissing()
 ## Checking if input dataframe is a balanced panel
 ### Documentation
 ```python
-paneleventstudy.balancepanel()
+paneleventstudy.balancepanel(data, group, event, calendartime, check_minmax=True)
 ```
 #### Parameters
 #### Output
@@ -32,7 +32,7 @@ paneleventstudy.balancepanel()
 ## Generate column indicating control groups (never-treated / last-treated)
 ### Documentation
 ```python
-paneleventstudy.identifycontrols()
+paneleventstudy.identifycontrols(data, group, event)
 ```
 #### Parameters
 #### Output
@@ -41,7 +41,7 @@ paneleventstudy.identifycontrols()
 ## Generate relative time column (treatment onset = 0)
 ### Documentation
 ```python
-paneleventstudy.genreltime()
+paneleventstudy.genreltime(data, group, event, calendartime, reltime='reltime', check_balance=True)
 ```
 #### Parameters
 #### Output
@@ -50,7 +50,7 @@ paneleventstudy.genreltime()
 ## Generate column indicating treatment cohorts
 ### Documentation
 ```python
-paneleventstudy.gencohort()
+paneleventstudy.gencohort(data, group, event, calendartime, cohort='cohort', check_balance=True)
 ```
 #### Parameters
 #### Output
@@ -59,7 +59,7 @@ paneleventstudy.gencohort()
 ## Generate calendar time with integers
 ### Documentation
 ```python
-paneleventstudy.gencalendartime_numerics()
+paneleventstudy.gencalendartime_numerics(data, group, event, calendartime, calendartime_numerics='ct')
 ```
 #### Parameters
 #### Output
@@ -68,7 +68,7 @@ paneleventstudy.gencalendartime_numerics()
 ## Identify collinear or invariant columns
 ### Documentation
 ```python
-paneleventstudy.checkcollinear()
+paneleventstudy.checkcollinear(data, rhs)
 ```
 #### Parameters
 #### Output
@@ -77,7 +77,7 @@ paneleventstudy.checkcollinear()
 ## Identify linearly dependent columns
 ### Documentation
 ```python
-paneleventstudy.checkfullrank()
+paneleventstudy.checkfullrank(data, rhs, intercept='Intercept')
 ```
 #### Parameters
 #### Output
@@ -85,9 +85,13 @@ paneleventstudy.checkfullrank()
 
 # Implementation (Analytical)
 ## Naive TWFE Panel Event Study
+Estimates dynamic treatment effects ($\beta_{l}$ coefficients on leads and lags of treatment dummies) using a standard two-way fixed effects model, where $l=0$ refers to when the treatment was applied to entity $i$.
+
+$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \epsilon_{i, t}$$
+
 ### Documentation
 ```python
-paneleventstudy.naivetwfe_eventstudy()
+paneleventstudy.naivetwfe_eventstudy(data, outcome, event, group, reltime, calendartime, covariates, vcov_type='robust', check_balance=True)
 ```
 #### Parameters
 #### Output
@@ -97,7 +101,7 @@ paneleventstudy.naivetwfe_eventstudy()
 ## Interaction-Weighted Panel Event Study 
 ### Documentation
 ```python
-paneleventstudy.interactionweighted_eventstudy()
+paneleventstudy.interactionweighted_eventstudy(data, outcome, event, group, cohort, reltime, calendartime, covariates, vcov_type='robust', check_balance=True)
 ```
 #### Parameters
 #### Output
@@ -107,35 +111,17 @@ paneleventstudy.interactionweighted_eventstudy()
 ## Single Entity Event Study 
 ### Documentation
 ```python
-paneleventstudy.timeseries_eventstudy()
+paneleventstudy.timeseries_eventstudy(data, outcome, reltime, covariates, vcov_type='HC3')
 ```
 #### Parameters
 #### Output
 ### Example
 
 # Implementation (Utilities)
-## Plotting Event Study Lead-Leag Coefficients
+## Plotting Event Study Lead and Lag Coefficients
 ### Documentation
 ```python
-paneleventstudy.eventstudyplot()
-```
-#### Parameters
-#### Output
-### Examples
-
-## Sending images using telegram bots
-### Documentation
-```python
-paneleventstudy.telsendimg()
-```
-#### Parameters
-#### Output
-### Examples
-
-## Sending files using telegram bots
-### Documentation
-```python
-paneleventstudy.telsendfiles()
+paneleventstudy.eventstudyplot(input, big_title='Event Study Plot (With 95% CIs)', path_output='', name_output='eventstudyplot')
 ```
 #### Parameters
 #### Output
