@@ -117,9 +117,9 @@ This implementation has 3 broad steps.
 	
 	$$1\{E_i = e | E_i \in g \} = w_{e,l} D_{i, t}^{l} + e_i$$
 	
-2. Estimate the cohort-specific average treatment effects, ${CATT}_{e, l}$, by interacting the cohort dummy with the treatment / relative time dummy, $1{E_i = e} D_{i,t}^{l}$.
+2. Estimate the cohort-specific average treatment effects, $CATT_{e, l}$, by interacting the cohort dummy with the treatment / relative time dummy, $1(E_i = e) D_{i,t}^{l}$.
 	
-	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
+	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
 	
 3. Calculate the interaction-weighted average treatment effects using output from steps 1 and 2 for every relative time $l$. In this current version, the estimated confidence bands are scaled the same way.
 	
