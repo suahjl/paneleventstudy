@@ -85,9 +85,11 @@ paneleventstudy.checkfullrank(data, rhs, intercept='Intercept')
 
 # Implementation (Analytical)
 ## Naive TWFE Panel Event Study
-Estimates dynamic treatment effects ($\beta_{l}$ coefficients on leads and lags of treatment dummies) using a standard two-way fixed effects model, where $l=0$ refers to when the treatment was applied to entity $i$.
+Estimates dynamic treatment effects ($\beta_{l}$ coefficients on leads and lags of treatment dummies) using a standard two-way fixed effects model, where $l=0$ ($l$ is referred to as relative time in (Sun and Abraham (2021))[https://doi.org/10.1016/j.jeconom.2020.09.006] refers to when the treatment was applied to entity $i$ at calendar time $t$. 
+$D_{i,t}^{l}$ are dummies switching on if entity $i$ is in calendar time $t$, and is $l$ periods relative to the treatment onset. That is also to say that $D_{i, t}^{l} \forall t, l$ never-treated entities will take values $0$.
+A TWFE regression model includes entity fixed effects ($\alpha_i$), and time fixed effects ($\alpha_t$). $\mathbf{X_{i, t}}$ is an optional vector of time-varying (within-entity) controls.
 
-$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \epsilon_{i, t}$$
+$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \mathbf{X_{i, t} \gamma} + \epsilon_{i, t}$$
 
 ### Documentation
 ```python
