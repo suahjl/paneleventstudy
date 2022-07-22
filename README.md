@@ -111,17 +111,22 @@ $l=0$ refers to when the treatment was applied to entity $i$.
 
 $$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \mathbf{X_{i, t} \gamma} + \eta_{i, t}$$
 
-This implementation has xx broad steps.
+This implementation has 3 broad steps.
 
 1. Calculate the cohort shares by relative time, $\mathbb{E} (E_i = e | E_i \in g )$ where $g$ is the set of relative times included in the analysis. This package uses a no-constant linear regression model with an OLS estimator as per the Sun and Abraham (2021)'s original Stata package [here](https://github.com/lsun20/EventStudyInteract). Using a linear regression approach, instead of simple tabulation, allows for calculation of standard errors of the cohort share estimates.
-	$$ 1\{E_i = e | E_i \in g \} = w_i  + e_i $$
+	
+	$$1\{E_i = e | E_i \in g \} = w_{e,l} D_{i, t}^{l} + e_i$$
 	
 2. Estimate the cohort-specific average treatment effects, ${CATT}_{e, l}$, by interacting the cohort dummy with the treatment / relative time dummy, $1{E_i = e} D_{i,t}^{l}$.
+	
 	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
 	
-3. Calculate the interaction-weighted average treatment effects using output from steps 1 and 2 for every relative time $l$.
-	$$\hat{\beta_l} = \sum_{e} \hat{\delta_{l}} \widehat{\mathbb{E}} (E_i = e | E_i \in g ) \ forall \ l$$ 
+3. Calculate the interaction-weighted average treatment effects using output from steps 1 and 2 for every relative time $l$. In this current version, the estimated confidence bands are scaled the same way.
 	
+	$$\hat{\beta_l} = \sum_{e} \hat{\delta_{l}} \hat{w_{e,l}} \ \forall \ l$$ 
+	
+
+
 
 ### Documentation
 ```python
