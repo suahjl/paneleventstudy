@@ -84,10 +84,14 @@ paneleventstudy.checkfullrank(data, rhs, intercept='Intercept')
 ### Example
 
 # Implementation (Analytical)
-## Naive TWFE Panel Event Study
-Estimates dynamic treatment effects ($\beta_{l}$ coefficients on leads and lags of treatment dummies) using a standard two-way fixed effects model, where $l=0$ ($l$ is referred to as relative time in (Sun and Abraham (2021))[https://doi.org/10.1016/j.jeconom.2020.09.006] refers to when the treatment was applied to entity $i$ at calendar time $t$. 
-$D_{i,t}^{l}$ are dummies switching on if entity $i$ is in calendar time $t$, and is $l$ periods relative to the treatment onset. That is also to say that $D_{i, t}^{l} \forall t, l$ never-treated entities will take values $0$.
+## Naive Two-Way Fixed Effects (TWFE) Panel Event Study
+Estimates dynamic treatment effects using a standard TWFE model. 
+Specifically, we are interested in estimating $\beta_{l}$, the coefficients on leads and lags of treatment dummies, where $l$ is relative time as in [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006), i.e., the time period relative to treatment onset. 
+$l=0$ refers to when the treatment was applied to entity $i$.
+
+$D_{i,t}^{l}$ are dummies switching on if entity $i$ is in calendar time $t$, and is $l$ periods relative to the treatment onset. That is also to say that $D_{i, t}^{l} \ \forall \ t, l$ never-treated entities will take values $0$.
 A TWFE regression model includes entity fixed effects ($\alpha_i$), and time fixed effects ($\alpha_t$). $\mathbf{X_{i, t}}$ is an optional vector of time-varying (within-entity) controls.
+$\epsilon_{i, t}$ are the errors.
 
 $$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \mathbf{X_{i, t} \gamma} + \epsilon_{i, t}$$
 
@@ -101,6 +105,24 @@ paneleventstudy.naivetwfe_eventstudy(data, outcome, event, group, reltime, calen
 
 
 ## Interaction-Weighted Panel Event Study 
+Estimates dynamic treatment effects using the interaction-weighted estimator described in [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006).
+Again, for the following structural equation, we are interested in estimating $\beta_{l}$, the coefficients on leads and lags of treatment dummies, where $l$ is relative time as in [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006), i.e., the time period relative to treatment onset. 
+$l=0$ refers to when the treatment was applied to entity $i$.
+
+$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum_{l=0}^{M} \beta_{l} D_{i, t}^{l} + \mathbf{X_{i, t} \gamma} + \eta_{i, t}$$
+
+This implementation has xx broad steps.
+
+1. Calculate the cohort shares by relative time, $\mathbb{E} (E_i = e | E_i \in g )$ where $g$ is the set of relative times included in the analysis. This package uses a no-constant linear regression model with an OLS estimator as per the Sun and Abraham (2021)'s original Stata package [here](https://github.com/lsun20/EventStudyInteract). Using a linear regression approach, instead of simple tabulation, allows for calculation of standard errors of the cohort share estimates.
+	$$ 1\{E_i = e | E_i \in g \} = w_i  + e_i $$
+	
+2. Estimate the cohort-specific average treatment effects, ${CATT}_{e, l}$, by interacting the cohort dummy with the treatment / relative time dummy, $1{E_i = e} D_{i,t}^{l}$.
+	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} \delta_{l} 1{E_i = e} D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
+	
+3. Calculate the interaction-weighted average treatment effects using output from steps 1 and 2 for every relative time $l$.
+	$$\hat{\beta_l} = \sum_{e} \hat{\delta_{l}} \widehat{\mathbb{E}} (E_i = e | E_i \in g ) \ forall \ l$$ 
+	
+
 ### Documentation
 ```python
 paneleventstudy.interactionweighted_eventstudy(data, outcome, event, group, cohort, reltime, calendartime, covariates, vcov_type='robust', check_balance=True)
@@ -111,6 +133,14 @@ paneleventstudy.interactionweighted_eventstudy(data, outcome, event, group, coho
 
 
 ## Single Entity Event Study 
+
+Estimates dynamic treatment effects ($\beta_{l}$ coefficients on leads and lags of treatment dummies) using an single entity linear regression model with an OLS estimator, where $l=0$ refers to when the treatment was applied. 
+$D_{l}$ are dummies switching when the entity is $l$ periods relative to the treatment onset.
+The linear regression includes a constant ($\alpha$), is an optional vector of controls ($\mathbf{X_{t}}$).
+$\epsilon_{t}$ are the errors.
+
+$$Y_{t} = \alpha + \sum_{l=-K}^{-2} \beta_{l} D_{l} + \sum_{l=0}^{M} \beta_{l} D_{l} + \mathbf{X_{t} \gamma} + \epsilon_{t}$$
+
 ### Documentation
 ```python
 paneleventstudy.timeseries_eventstudy(data, outcome, reltime, covariates, vcov_type='HC3')
