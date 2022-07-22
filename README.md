@@ -100,7 +100,38 @@ $$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \beta_{l} D_{i, t}^{l} + \sum
 paneleventstudy.naivetwfe_eventstudy(data, outcome, event, group, reltime, calendartime, covariates, vcov_type='robust', check_balance=True)
 ```
 #### Parameters
+```data```: 
+	[pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
+
+```outcome```: 
+	String matching the label of the column in ```data``` corresponding to the outcome variable; this is the LHS variable in the regression
+
+```event```:
+	String matching the label of the column in ```data``` corresponding to the event variable; this should be a dummy variable indicating the pre- (values 0 prior to relative time 0) and post- periods (values 1 from relative time 0 onwards)
+
+```group```:
+	String matching the label of the column in ```data``` containing the categorical levels of the individual entities
+	
+```reltime```:
+	Integers matching the label of the column in ```data``` containing relative times going from -L to +K, with 0 being the timing of treatment onset; this can be generated from ```calendartime``` generated from ```genreltime```, and ```reltime=-1``` is automatically chosen as the reference period
+
+```calendartime```:
+	Integers matching the label of the column in ```data``` containing calendar times going from 0 (earliest time period) to T (last time period); this can be generated from ```calendartime```.
+
+```covariates```:
+	List of columns corresponding to control variables in ```data``` to be included in the RHS of the regression; if no covariates are to be included, set ```covariates=[]```
+
+```vcov_type```:
+	String corresponding to the type of variance-covariance estimator in [linearmodels.PanelOLS.fit()](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.fit.html), which is called during the estimation process; default option is ```'robust'```
+	
+```check_balance```:
+	Checks if ```data``` is a balanced panel; default option is ```True```
+
 #### Output
+Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) with 3 columns, indexed to ```reltime```: 
+1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
+2. ```lower```: The lower confidence bound of ```parameter```
+3. ```upper```:  The upper confidence bound of ```parameter```
 ### Example
 
 
@@ -119,21 +150,54 @@ This implementation has 3 broad steps.
 	
 2. Estimate the cohort-specific average treatment effects, $CATT_{e, l}$, by interacting the cohort dummy with the treatment / relative time dummy, $1(E_i = e) D_{i,t}^{l}$.
 	
-	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
+	$$Y_{i,t} = \alpha_i + \alpha_t + \sum_{l=-K}^{-2} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \sum_{l=0}^{M} \delta_{l} 1(E_i = e) D_{i,t}^{l} + \mathbf{X_{i, t} \gamma} + \varepsilon_{i, t}$$
 	
 3. Calculate the interaction-weighted average treatment effects using output from steps 1 and 2 for every relative time $l$. In this current version, the estimated confidence bands are scaled the same way.
 	
 	$$\hat{\beta_l} = \sum_{e} \hat{\delta_{l}} \hat{w_{e,l}} \ \forall \ l$$ 
 	
 
-
-
 ### Documentation
 ```python
 paneleventstudy.interactionweighted_eventstudy(data, outcome, event, group, cohort, reltime, calendartime, covariates, vcov_type='robust', check_balance=True)
 ```
 #### Parameters
+
+```data```: 
+	[pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
+
+```outcome```: 
+	String matching the label of the column in ```data``` corresponding to the outcome variable; this is the LHS variable in the regression
+
+```event```:
+	String matching the label of the column in ```data``` corresponding to the event variable; this should be a dummy variable indicating the pre- (values 0 prior to relative time 0) and post- periods (values 1 from relative time 0 onwards)
+
+```group```:
+	String matching the label of the column in ```data``` containing the categorical levels of the individual entities
+	
+```cohort```:
+	Integers matching the label of the column in ```data``` containing the categorical levels of the cohorts in the data set generated from ```gencohort``` (e.g., all entities treated in calendar time 3 should take the value 3 in this column)
+
+```reltime```:
+	Integers matching the label of the column in ```data``` containing relative times going from -L to +K, with 0 being the timing of treatment onset; this can be generated from ```calendartime``` generated from ```genreltime```, and ```reltime=-1``` is automatically chosen as the reference period
+
+```calendartime```:
+	Integers matching the label of the column in ```data``` containing calendar times going from 0 (earliest time period) to T (last time period); this can be generated from ```calendartime```.
+
+```covariates```:
+	List of columns corresponding to control variables in ```data``` to be included in the RHS of the regression; if no covariates are to be included, set ```covariates=[]```
+
+```vcov_type```:
+	String corresponding to the type of variance-covariance estimator in [linearmodels.PanelOLS.fit()](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.fit.html), which is called during the estimation process; default option is ```'robust'```
+	
+```check_balance```:
+	Checks if ```data``` is a balanced panel; default option is ```True```
+
 #### Output
+Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) with 3 columns, indexed to ```reltime```: 
+1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
+2. ```lower```: The lower confidence bound of ```parameter```
+3. ```upper```:  The upper confidence bound of ```parameter```
 ### Example
 
 
@@ -151,7 +215,27 @@ $$Y_{t} = \alpha + \sum_{l=-K}^{-2} \beta_{l} D_{l} + \sum_{l=0}^{M} \beta_{l} D
 paneleventstudy.timeseries_eventstudy(data, outcome, reltime, covariates, vcov_type='HC3')
 ```
 #### Parameters
+```data```: 
+	[pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html)
+
+```outcome```: 
+	String matching the label of the column in ```data``` corresponding to the outcome variable; this is the LHS variable in the regression
+
+```reltime```:
+	Integers matching the label of the column in ```data``` containing relative times going from -L to +K, with 0 being the timing of treatment onset
+
+```covariates```:
+	List of columns corresponding to control variables in ```data``` to be included in the RHS of the regression; if no covariates are to be included, set ```covariates=[]```
+
+```vcov_type```:
+	String corresponding to the type of variance-covariance estimator in [statsmodels.regression.linear_model.RegressionResults.get_robustcov_results](https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.RegressionResults.get_robustcov_results.html#statsmodels.regression.linear_model.RegressionResults.get_robustcov_results), which is called during the estimation process; default option is ```'HC3'```
+	
+
 #### Output
+Returns a [pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) with 3 columns, indexed to ```reltime```: 
+1. ```parameter```: The point estimates of the interaction-weighted average treatment affects
+2. ```lower```: The lower confidence bound of ```parameter```
+3. ```upper```:  The upper confidence bound of ```parameter```
 ### Example
 
 # Implementation (Utilities)
@@ -161,6 +245,17 @@ paneleventstudy.timeseries_eventstudy(data, outcome, reltime, covariates, vcov_t
 paneleventstudy.eventstudyplot(input, big_title='Event Study Plot (With 95% CIs)', path_output='', name_output='eventstudyplot')
 ```
 #### Parameters
+```input```:
+	Output from the analytical functions (```paneleventstudy.naivetwfe_eventstudy()```, ```paneleventstudy.interactionweighted_eventstudy()```, ```paneleventstudy.timeseries_eventstudy()```)
+
+```big_title```:
+	String containing the main title of the figure; default is ```'Event Study Plot (With 95% CIs)'```
+path_output:
+	
+
+name_output=
+	String containing the file name of the image and html file to be generated; default is ```'eventstudyplot'```
+
 #### Output
 ### Examples
 
