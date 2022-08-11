@@ -6,7 +6,7 @@ except ModuleNotFoundError:
     import tomli as tomllib
 
 # Version of the package
-__version__ = "0.0.0"
+__version__ = "0.0.6"
 
 # Load scripts / classes / functions so that they can be called directly
 

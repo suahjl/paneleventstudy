@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: paneleventstudy
-Version: 0.0.1
+Version: 0.0.6
 Summary: This module implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021).
 Author-email: Jing Lian Suah <suahjinglian@bnm.gov.my>
 License: MIT License
@@ -77,7 +77,9 @@ This package checks if the input data is indeed a balanced panel with entities $
 	$$L(\mathbf{t}_{i}) = L_T \ \forall \ i \ for \ L_T \in \mathcal{N}^{+} $$
 
 2. Optionally, if the calendar time variable in the input data frame is numeric, further check if the smallest and largest time values are the same for all entities $i$
+	
 	$$\min(\mathbf{t}_{i}) = L_Tmin \ \forall \ i \ for \ L_Tmin \in \mathcal{N}^{0+} $$
+	
 	$$\max(\mathbf{t}_{i}) = L_Tmax \ \forall \ i \ for \ L_Tmax \in \mathcal{N}^{+} $$
 
 ### Documentation

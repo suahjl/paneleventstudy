@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from linearmodels import PanelOLS
 
-from dataprep import (
+from .dataprep import (
 balancepanel,
 )
 

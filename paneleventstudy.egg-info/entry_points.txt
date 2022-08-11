@@ -1,0 +1,2 @@
+[console_scripts]
+paneleventstudy = paneleventstudy.__main__:main

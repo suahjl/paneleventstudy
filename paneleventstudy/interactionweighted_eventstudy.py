@@ -4,7 +4,7 @@ from patsy import dmatrices
 import statsmodels.formula.api as smf
 from linearmodels import PanelOLS
 
-from dataprep import (
+from .dataprep import (
 balancepanel,
 checkcollinear,
 checkfullrank,

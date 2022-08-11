@@ -40,7 +40,9 @@ This package checks if the input data is indeed a balanced panel with entities $
 	$$L(\mathbf{t}_{i}) = L_T \ \forall \ i \ for \ L_T \in \mathcal{N}^{+} $$
 
 2. Optionally, if the calendar time variable in the input data frame is numeric, further check if the smallest and largest time values are the same for all entities $i$
+	
 	$$\min(\mathbf{t}_{i}) = L_Tmin \ \forall \ i \ for \ L_Tmin \in \mathcal{N}^{0+} $$
+	
 	$$\max(\mathbf{t}_{i}) = L_Tmax \ \forall \ i \ for \ L_Tmax \in \mathcal{N}^{+} $$
 
 ### Documentation
