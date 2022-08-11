@@ -1,0 +1,16 @@
+LICENSE
+README.md
+pyproject.toml
+src/__init__.py
+src/__main__.py
+src/dataprep.py
+src/eventstudyplot.py
+src/interactionweighted_eventstudy.py
+src/naivetwfe_eventstudy.py
+src/timeseries_eventstudy.py
+src/paneleventstudy.egg-info/PKG-INFO
+src/paneleventstudy.egg-info/SOURCES.txt
+src/paneleventstudy.egg-info/dependency_links.txt
+src/paneleventstudy.egg-info/entry_points.txt
+src/paneleventstudy.egg-info/requires.txt
+src/paneleventstudy.egg-info/top_level.txt
