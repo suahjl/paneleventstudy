@@ -6,10 +6,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paneleventstudy"
-version = "0.0.6"
+version = "0.0.7"
 description = "This module implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021)."
 readme = "README.md"
-authors = [{ name = "Jing Lian Suah", email = "suahjinglian@bnm.gov.my" }]
+authors = [{ name = "Jing Lian Suah", email = "jlsuah@hkma.gov.hk" }]
 license = { file = "LICENSE" }
 classifiers = [
     "License :: OSI Approved :: MIT License",

@@ -1,11 +1,11 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: paneleventstudy
-Version: 0.0.6
+Version: 0.0.7
 Summary: This module implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021).
-Author-email: Jing Lian Suah <suahjinglian@bnm.gov.my>
+Author-email: Jing Lian Suah <jlsuah@hkma.gov.hk>
 License: MIT License
         
-        Copyright (c) 2022 Jing Lian Suah
+        Copyright (c) 2025 Jing Lian Suah
         
         Permission is hereby granted, free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,14 @@ Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
-Provides-Extra: dev
 License-File: LICENSE
+Requires-Dist: pandas>=1.4.3
+Requires-Dist: numpy>=1.23.0
+Requires-Dist: linearmodels>=4.27
+Requires-Dist: plotly>=5.9.0
+Requires-Dist: statsmodels>=0.13.2
+Requires-Dist: sympy>=1.10.1
+Provides-Extra: dev
 
 # paneleventstudy
 This Python package implements the panel (and single entity) event study models, covering the naive two-way fixed effects implementation, and the interaction-weighted implementation from Sun and Abraham (2021) (derived from https://github.com/lsun20/EventStudyInteract).

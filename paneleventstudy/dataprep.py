@@ -40,7 +40,7 @@ def balancepanel(data, group, event, calendartime, check_minmax=True):
             print('Some groups have different maximum calendartime values!')
         if (check_N == 1) & (check_min == 1) & (check_max == 1):
             check_balancepanel = True
-        elif ~((check_N == 1) & (check_min == 1) & (check_max == 1)):
+        elif not ((check_N == 1) & (check_min == 1) & (check_max == 1)):
             check_balancepanel = False
     elif not check_minmax:
         print('NOT checking min and max of calendartime by groups')

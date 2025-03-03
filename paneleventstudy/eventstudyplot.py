@@ -47,7 +47,7 @@ def eventstudyplot(input, big_title='Event Study Plot (With 95% CIs)', path_outp
         font=dict(color='black')
     )
     # Save output
-    fig.write_html(path_output + name_output + '.html')
+    # fig.write_html(path_output + name_output + '.html')
     fig.write_image(path_output + name_output + '.png', height=768, width=1366)
     # fig.show()
     return fig
